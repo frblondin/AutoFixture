@@ -16,6 +16,11 @@ namespace Ploeh.AutoFixture.NUnit3
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1813:AvoidUnsealedAttributes", Justification = "This attribute is the root of a potential attribute hierarchy.")]
     public class AutoDataAttribute : Attribute, ITestBuilder
     {
+        /// <summary>
+        /// Name used for producing the argument value as string for the test method so that it don't vary between discovery and execution.
+        /// </summary>
+        public const string InvariantAutoDataArgumentValue = "auto<{0}>";
+
         private readonly IFixture _fixture;
 
         /// <summary>
@@ -62,13 +67,20 @@ namespace Ploeh.AutoFixture.NUnit3
                 var parameters = method.GetParameters();
 
                 var parameterValues = this.GetParameterValues(parameters);
+                var invariantParameterValuesAsString = BuildInvariantParametersAsString(parameters);
 
-                return new TestCaseParameters(parameterValues.ToArray());
+                return new TestCaseParameters(parameterValues.ToArray()) { TestName = $"{{m}}({invariantParameterValuesAsString})" };
             }
             catch (Exception ex)
             {
                 return new TestCaseParameters(ex);
             }
+        }
+
+        private string BuildInvariantParametersAsString(IParameterInfo[] parameters)
+        {
+            return string.Join(", ", from parameter in parameters
+                                     select string.Format(InvariantAutoDataArgumentValue, parameter.ParameterType.Name));
         }
 
         private IEnumerable<object> GetParameterValues(IEnumerable<IParameterInfo> parameters)

@@ -17,6 +17,8 @@ namespace Ploeh.AutoFixture.NUnit3
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1813:AvoidUnsealedAttributes", Justification = "This attribute is the root of a potential attribute hierarchy.")]
     public class InlineAutoDataAttribute : Attribute, ITestBuilder
     {
+        private const int MaxArgumentLength = 40;
+
         private readonly object[] _existingParameterValues;
         private readonly IFixture _fixture;
 
@@ -79,13 +81,23 @@ namespace Ploeh.AutoFixture.NUnit3
                 var parameters = method.GetParameters();
 
                 var parameterValues = this.GetParameterValues(parameters);
+                var invariantParameterValuesAsString = BuildInvariantParametersAsString(parameters);
 
-                return new TestCaseParameters(parameterValues.ToArray());
+                return new TestCaseParameters(parameterValues.ToArray()) { TestName = $"{{m}}({invariantParameterValuesAsString})" };
             }
             catch (Exception ex)
             {
                 return new TestCaseParameters(ex);
             }
+        }
+
+        private string BuildInvariantParametersAsString(IParameterInfo[] parameters)
+        {
+            return string.Join(", ", from parameter in parameters
+                                     let index = parameter.ParameterInfo.Position
+                                     select index < this._existingParameterValues.Length ?
+                                            $"{{{index}}}" :
+                                            string.Format(AutoDataAttribute.InvariantAutoDataArgumentValue, parameter.ParameterType.Name));
         }
 
         /// <summary>

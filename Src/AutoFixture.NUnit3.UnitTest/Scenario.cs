@@ -2,6 +2,7 @@
 using System.Linq;
 using NUnit.Framework;
 using Ploeh.TestTypeFoundation;
+using NUnit.Framework.Internal;
 
 namespace Ploeh.AutoFixture.NUnit3.UnitTest
 {
@@ -77,7 +78,7 @@ namespace Ploeh.AutoFixture.NUnit3.UnitTest
             Assert.False(string.IsNullOrEmpty(p.Text));
             Assert.AreNotEqual(0, p.Number);
         }
-        
+
         [Test, AutoData]
         public void BothFrozenAndGreedyAttributesCanBeAppliedToSameParameter([Frozen][Greedy]MultiUnorderedConstructorType p1, MultiUnorderedConstructorType p2)
         {
@@ -378,7 +379,7 @@ namespace Ploeh.AutoFixture.NUnit3.UnitTest
 
         [Theory, AutoData]
         public void NoAutoPropertiesAttributeLeavesPropertiesUnset(
-            [NoAutoProperties]PropertyHolder<object> ph1, 
+            [NoAutoProperties]PropertyHolder<object> ph1,
             [NoAutoProperties]PropertyHolder<string> ph2,
             [NoAutoProperties]PropertyHolder<int> ph3
             )
@@ -386,6 +387,46 @@ namespace Ploeh.AutoFixture.NUnit3.UnitTest
             Assert.That(ph1.Property, Is.EqualTo(default(object)));
             Assert.That(ph2.Property, Is.EqualTo(default(string)));
             Assert.That(ph3.Property, Is.EqualTo(default(int)));
+        }
+
+        [Test]
+        public void AutoDataUsesFixedValuesForTestName()
+        {
+            var testMethod = GetTestMethod<AutoDataAttribute>(nameof(IntroductoryTest));
+            Assert.That(testMethod.Name,
+                Is.EqualTo($@"{nameof(IntroductoryTest)}(auto<Int32>, auto<MyClass>)"));
+        }
+
+        [Test]
+        public void AutoDataUsesFixedValuesForTestFullName()
+        {
+            var testMethod = GetTestMethod<AutoDataAttribute>(nameof(IntroductoryTest));
+            Assert.That(testMethod.FullName,
+                Is.EqualTo($@"{typeof(Scenario).FullName}.{nameof(IntroductoryTest)}(auto<Int32>, auto<MyClass>)"));
+        }
+
+        [Test]
+        public void InlineAutoDataUsesFixedValuesForTestName()
+        {
+            var testMethod = GetTestMethod<InlineAutoDataAttribute>(nameof(InlineAutoDataProvidesParameterValuesWhenMissing));
+            Assert.That(testMethod.Name,
+                Is.EqualTo($@"{nameof(InlineAutoDataProvidesParameterValuesWhenMissing)}(""alpha"", ""beta"", auto<String>)"));
+        }
+
+        [Test]
+        public void InlineAutoDataUsesFixedValuesForTestFullName()
+        {
+            var testMethod = GetTestMethod<InlineAutoDataAttribute>(nameof(InlineAutoDataProvidesParameterValuesWhenMissing));
+            Assert.That(testMethod.FullName,
+                Is.EqualTo($@"{typeof(Scenario).FullName}.{nameof(InlineAutoDataProvidesParameterValuesWhenMissing)}(""alpha"", ""beta"", auto<String>)"));
+        }
+
+        private TestMethod GetTestMethod<TAttribute>(string testName) where TAttribute : Attribute, NUnit.Framework.Interfaces.ITestBuilder
+        {
+            var method = new MethodWrapper(typeof(Scenario), testName);
+            var inlineAttribute = (TAttribute)Attribute.GetCustomAttribute(method.MethodInfo, typeof(TAttribute));
+            var testMethod = inlineAttribute.BuildFrom(method, null).Single();
+            return testMethod;
         }
     }
 }
