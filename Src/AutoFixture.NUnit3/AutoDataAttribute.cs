@@ -5,6 +5,7 @@ using NUnit.Framework.Interfaces;
 using NUnit.Framework.Internal;
 using NUnit.Framework.Internal.Builders;
 using Ploeh.AutoFixture.Kernel;
+using System.Globalization;
 
 namespace Ploeh.AutoFixture.NUnit3
 {
@@ -67,9 +68,9 @@ namespace Ploeh.AutoFixture.NUnit3
                 var parameters = method.GetParameters();
 
                 var parameterValues = this.GetParameterValues(parameters);
-                var invariantParameterValuesAsString = BuildInvariantParametersAsString(parameters);
+                var invariantTestName = string.Format(CultureInfo.CurrentCulture, "{{m}}({0})", BuildInvariantParametersAsString(parameters));
 
-                return new TestCaseParameters(parameterValues.ToArray()) { TestName = $"{{m}}({invariantParameterValuesAsString})" };
+                return new TestCaseParameters(parameterValues.ToArray()) { TestName = invariantTestName };
             }
             catch (Exception ex)
             {

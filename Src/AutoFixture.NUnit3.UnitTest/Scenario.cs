@@ -394,7 +394,7 @@ namespace Ploeh.AutoFixture.NUnit3.UnitTest
         {
             var testMethod = GetTestMethod<AutoDataAttribute>(nameof(IntroductoryTest));
             Assert.That(testMethod.Name,
-                Is.EqualTo($@"{nameof(IntroductoryTest)}(auto<Int32>, auto<MyClass>)"));
+                Is.EqualTo(nameof(IntroductoryTest) + "(auto<Int32>, auto<MyClass>)"));
         }
 
         [Test]
@@ -402,7 +402,7 @@ namespace Ploeh.AutoFixture.NUnit3.UnitTest
         {
             var testMethod = GetTestMethod<AutoDataAttribute>(nameof(IntroductoryTest));
             Assert.That(testMethod.FullName,
-                Is.EqualTo($@"{typeof(Scenario).FullName}.{nameof(IntroductoryTest)}(auto<Int32>, auto<MyClass>)"));
+                Is.EqualTo(typeof(Scenario).FullName + "." + nameof(IntroductoryTest) + "(auto<Int32>, auto<MyClass>)"));
         }
 
         [Test]
@@ -410,7 +410,7 @@ namespace Ploeh.AutoFixture.NUnit3.UnitTest
         {
             var testMethod = GetTestMethod<InlineAutoDataAttribute>(nameof(InlineAutoDataProvidesParameterValuesWhenMissing));
             Assert.That(testMethod.Name,
-                Is.EqualTo($@"{nameof(InlineAutoDataProvidesParameterValuesWhenMissing)}(""alpha"", ""beta"", auto<String>)"));
+                Is.EqualTo(nameof(InlineAutoDataProvidesParameterValuesWhenMissing) + @"(""alpha"", ""beta"", auto<String>)"));
         }
 
         [Test]
@@ -418,7 +418,7 @@ namespace Ploeh.AutoFixture.NUnit3.UnitTest
         {
             var testMethod = GetTestMethod<InlineAutoDataAttribute>(nameof(InlineAutoDataProvidesParameterValuesWhenMissing));
             Assert.That(testMethod.FullName,
-                Is.EqualTo($@"{typeof(Scenario).FullName}.{nameof(InlineAutoDataProvidesParameterValuesWhenMissing)}(""alpha"", ""beta"", auto<String>)"));
+                Is.EqualTo(typeof(Scenario).FullName + "." + nameof(InlineAutoDataProvidesParameterValuesWhenMissing) + @"(""alpha"", ""beta"", auto<String>)"));
         }
 
         private TestMethod GetTestMethod<TAttribute>(string testName) where TAttribute : Attribute, NUnit.Framework.Interfaces.ITestBuilder
