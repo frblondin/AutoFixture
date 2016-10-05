@@ -98,7 +98,7 @@ namespace Ploeh.AutoFixture.NUnit3
                                      let index = parameter.ParameterInfo.Position
                                      select index < this._existingParameterValues.Length ?
                                             "{" + index + "}" :
-                                            string.Format(AutoDataAttribute.InvariantAutoDataArgumentValue, parameter.ParameterType.Name));
+                                            string.Format(CultureInfo.CurrentCulture, AutoDataAttribute.InvariantAutoDataArgumentValue, parameter.ParameterType.Name));
         }
 
         /// <summary>

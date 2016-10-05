@@ -78,10 +78,10 @@ namespace Ploeh.AutoFixture.NUnit3
             }
         }
 
-        private string BuildInvariantParametersAsString(IParameterInfo[] parameters)
+        private static string BuildInvariantParametersAsString(IParameterInfo[] parameters)
         {
             return string.Join(", ", from parameter in parameters
-                                     select string.Format(InvariantAutoDataArgumentValue, parameter.ParameterType.Name));
+                                     select string.Format(CultureInfo.CurrentCulture, InvariantAutoDataArgumentValue, parameter.ParameterType.Name));
         }
 
         private IEnumerable<object> GetParameterValues(IEnumerable<IParameterInfo> parameters)
