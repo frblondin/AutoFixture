@@ -346,10 +346,6 @@
     <Compile Include="Utf8EncodingGeneratorTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AutoFixture\AutoFixture.csproj">
-      <Project>{400AC174-9A4A-4C7D-815B-F2A21130A0D1}</Project>
-      <Name>AutoFixture</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TestTypeFoundation\TestTypeFoundation.csproj">
       <Project>{7FF65787-F462-4204-BB9D-60B0D1BB6CC1}</Project>
       <Name>TestTypeFoundation</Name>

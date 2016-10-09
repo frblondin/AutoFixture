@@ -34,6 +34,10 @@
       <HintPath>..\..\Packages\NUnit.3.0.0\lib\net40\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Ploeh.AutoFixture, Version=3.50.2.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\AutoFixture.3.50.2\lib\net40\Ploeh.AutoFixture.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -69,10 +73,6 @@
     <ProjectReference Include="..\AutoFixture.NUnit3\AutoFixture.NUnit3.csproj">
       <Project>{6539dc8b-7829-478e-a601-7625b0c814e1}</Project>
       <Name>AutoFixture.NUnit3</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AutoFixture\AutoFixture.csproj">
-      <Project>{400AC174-9A4A-4C7D-815B-F2A21130A0D1}</Project>
-      <Name>AutoFixture</Name>
     </ProjectReference>
     <ProjectReference Include="..\TestTypeFoundation\TestTypeFoundation.csproj">
       <Project>{7ff65787-f462-4204-bb9d-60b0d1bb6cc1}</Project>
