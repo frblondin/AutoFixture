@@ -43,16 +43,6 @@ Target "TestOnly" (fun _ ->
     let testAssemblies = !! (sprintf "Src/*Test/bin/%s/*Test.dll" configuration)
                          -- (sprintf "Src/AutoFixture.NUnit*.*Test/bin/%s/*Test.dll" configuration)
 
-    testAssemblies
-    |> xUnit2 (fun p -> { p with Parallel = parallelMode
-                                 MaxThreads = maxThreads })
-
-    let nunit2TestAssemblies = !! (sprintf "Src/AutoFixture.NUnit2.*Test/bin/%s/*Test.dll" configuration)
-
-    nunit2TestAssemblies
-    |> NUnit (fun p -> { p with StopOnError = false
-                                OutputFile = "NUnit2TestResult.xml" })
-
     let nunit3TestAssemblies = !! (sprintf "Src/AutoFixture.NUnit3.UnitTest/bin/%s/Ploeh.AutoFixture.NUnit3.UnitTest.dll" configuration)
 
     nunit3TestAssemblies
@@ -66,51 +56,9 @@ Target "Test"  (fun _ -> ())
 
 Target "CopyToReleaseFolder" (fun _ ->
     let buildOutput = [
-      "Src/AutoFixture/bin/Release/Ploeh.AutoFixture.dll";
-      "Src/AutoFixture/bin/Release/Ploeh.AutoFixture.pdb";
-      "Src/AutoFixture/bin/Release/Ploeh.AutoFixture.XML";
-      "Src/SemanticComparison/bin/Release/Ploeh.SemanticComparison.dll";
-      "Src/SemanticComparison/bin/Release/Ploeh.SemanticComparison.pdb";
-      "Src/SemanticComparison/bin/Release/Ploeh.SemanticComparison.XML";
-      "Src/AutoMoq/bin/Release/Ploeh.AutoFixture.AutoMoq.dll";
-      "Src/AutoMoq/bin/Release/Ploeh.AutoFixture.AutoMoq.pdb";
-      "Src/AutoMoq/bin/Release/Ploeh.AutoFixture.AutoMoq.XML";
-      "Src/AutoRhinoMock/bin/Release/Ploeh.AutoFixture.AutoRhinoMock.dll";
-      "Src/AutoRhinoMock/bin/Release/Ploeh.AutoFixture.AutoRhinoMock.pdb";
-      "Src/AutoRhinoMock/bin/Release/Ploeh.AutoFixture.AutoRhinoMock.XML";
-      "Src/AutoFakeItEasy/bin/Release/Ploeh.AutoFixture.AutoFakeItEasy.dll";
-      "Src/AutoFakeItEasy/bin/Release/Ploeh.AutoFixture.AutoFakeItEasy.pdb";
-      "Src/AutoFakeItEasy/bin/Release/Ploeh.AutoFixture.AutoFakeItEasy.XML";
-      "Src/AutoFakeItEasy2/bin/Release/Ploeh.AutoFixture.AutoFakeItEasy2.dll";
-      "Src/AutoFakeItEasy2/bin/Release/Ploeh.AutoFixture.AutoFakeItEasy2.pdb";
-      "Src/AutoFakeItEasy2/bin/Release/Ploeh.AutoFixture.AutoFakeItEasy2.XML";
-      "Src/AutoNSubstitute/bin/Release/Ploeh.AutoFixture.AutoNSubstitute.dll";
-      "Src/AutoNSubstitute/bin/Release/Ploeh.AutoFixture.AutoNSubstitute.pdb";
-      "Src/AutoNSubstitute/bin/Release/Ploeh.AutoFixture.AutoNSubstitute.XML";
-      "Src/AutoFoq/bin/Release/Ploeh.AutoFixture.AutoFoq.dll";
-      "Src/AutoFoq/bin/Release/Ploeh.AutoFixture.AutoFoq.pdb";
-      "Src/AutoFoq/bin/Release/Ploeh.AutoFixture.AutoFoq.XML";
-      "Src/AutoFixture.xUnit.net/bin/Release/Ploeh.AutoFixture.Xunit.dll";
-      "Src/AutoFixture.xUnit.net/bin/Release/Ploeh.AutoFixture.Xunit.pdb";
-      "Src/AutoFixture.xUnit.net/bin/Release/Ploeh.AutoFixture.Xunit.XML";
-      "Src/AutoFixture.xUnit.net2/bin/Release/Ploeh.AutoFixture.Xunit2.dll";
-      "Src/AutoFixture.xUnit.net2/bin/Release/Ploeh.AutoFixture.Xunit2.pdb";
-      "Src/AutoFixture.xUnit.net2/bin/Release/Ploeh.AutoFixture.Xunit2.XML";
-      "Src/AutoFixture.NUnit2/bin/Release/Ploeh.AutoFixture.NUnit2.dll";
-      "Src/AutoFixture.NUnit2/bin/Release/Ploeh.AutoFixture.NUnit2.pdb";
-      "Src/AutoFixture.NUnit2/bin/Release/Ploeh.AutoFixture.NUnit2.XML";
-      "Src/AutoFixture.NUnit2/bin/Release/Ploeh.AutoFixture.NUnit2.Addins.dll";
-      "Src/AutoFixture.NUnit2/bin/Release/Ploeh.AutoFixture.NUnit2.Addins.pdb";
-      "Src/AutoFixture.NUnit2/bin/Release/Ploeh.AutoFixture.NUnit2.Addins.XML";
       "Src/AutoFixture.NUnit3/bin/Release/Ploeh.AutoFixture.NUnit3.dll";
       "Src/AutoFixture.NUnit3/bin/Release/Ploeh.AutoFixture.NUnit3.pdb";
       "Src/AutoFixture.NUnit3/bin/Release/Ploeh.AutoFixture.NUnit3.XML";
-      "Src/Idioms/bin/Release/Ploeh.AutoFixture.Idioms.dll";
-      "Src/Idioms/bin/Release/Ploeh.AutoFixture.Idioms.pdb";
-      "Src/Idioms/bin/Release/Ploeh.AutoFixture.Idioms.XML";
-      "Src/Idioms.FsCheck/bin/Release/Ploeh.AutoFixture.Idioms.FsCheck.dll";
-      "Src/Idioms.FsCheck/bin/Release/Ploeh.AutoFixture.Idioms.FsCheck.pdb";
-      "Src/Idioms.FsCheck/bin/Release/Ploeh.AutoFixture.Idioms.FsCheck.XML";
       nunitToolsFolder @@ "lib/nunit.core.interfaces.dll"
     ]
     let nuGetPackageScripts = !! "NuGet/*.ps1" ++ "NuGet/*.txt" ++ "NuGet/*.pp" |> List.ofSeq
@@ -125,7 +73,7 @@ Target "CleanNuGetPackages" (fun _ ->
 )
 
 Target "NuGetPack" (fun _ ->
-    let version = "Src/AutoFixture/bin/Release/Ploeh.AutoFixture.dll"
+    let version = "Release/Ploeh.AutoFixture.NUnit3.dll"
                   |> GetAssemblyVersion
                   |> (fun v -> sprintf "%i.%i.%i" v.Major v.Minor v.Build)
 
