@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package>
     <metadata>
-        <id>AutoFixture.NUnit3</id>
+        <id>AutoFixture.NUnit3.PatchedName</id>
         <version>@build.number@</version>
         <title>AutoFixture with NUnit3</title>
         <authors>Hackle Wayne, AutoFixture</authors>
@@ -10,12 +10,12 @@
             <dependency id="AutoFixture" version="@build.number@" />
             <dependency id="NUnit" version="3.0.1" />
         </dependencies>
-        <summary>Extension to AutoFixture that integrates it with NUnit3.</summary>
+        <summary>Extension to AutoFixture that integrates it with NUnit3. Temporary package as a pull request is waiting for a validation in the official package. This patched version simplifies the name so that it doesn't vary from on value generation to another.</summary>
         <description>By leveraging some features of NUnit3, this extension turns AutoFixture into a declarative framework for writing unit tests. In many ways it becomes a unit testing DSL (Domain Specific Language).</description>
         <iconUrl>https://raw.githubusercontent.com/AutoFixture/AutoFixture/master/AutoFixtureLogo200x200.png</iconUrl>
         <language>en-US</language>
         <licenseUrl>https://github.com/AutoFixture/AutoFixture/blob/master/LICENCE.txt</licenseUrl>
-        <projectUrl>https://github.com/AutoFixture/AutoFixture</projectUrl>
+        <projectUrl>https://github.com/AutoFixture/AutoFixture/pull/709</projectUrl>
     </metadata>
     <files>
         <file src="Ploeh.AutoFixture.NUnit3.dll" target="lib\net40" />
