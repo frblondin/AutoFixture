@@ -75,7 +75,7 @@ Target "CleanNuGetPackages" (fun _ ->
 Target "NuGetPack" (fun _ ->
     let version = "Release/Ploeh.AutoFixture.NUnit3.dll"
                   |> GetAssemblyVersion
-                  |> (fun v -> sprintf "%i.%i.%i" v.Major v.Minor v.Build)
+                  |> (fun v -> sprintf "%i.%i.%i.%i" v.Major v.Minor v.Build v.Revision)
 
     let nuSpecFiles = !! "NuGet/*.nuspec"
 
