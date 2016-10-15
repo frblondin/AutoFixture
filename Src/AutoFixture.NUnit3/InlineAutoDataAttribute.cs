@@ -71,6 +71,10 @@ namespace Ploeh.AutoFixture.NUnit3
         {
             var test = new NUnitTestCaseBuilder().BuildTestMethod(method, suite, this.GetParametersForMethod(method));
 
+            // Make sure that the full name only contains the fully qualified name
+            // This is required so that the filter works
+            test.FullName = method.TypeInfo.FullName + "." + method.Name;
+
             yield return test;
         }
 
