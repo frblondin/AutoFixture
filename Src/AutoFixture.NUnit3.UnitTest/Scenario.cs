@@ -401,8 +401,16 @@ namespace Ploeh.AutoFixture.NUnit3.UnitTest
         public void AutoDataUsesFixedValuesForTestFullName()
         {
             var testMethod = GetTestMethod<AutoDataAttribute>(nameof(IntroductoryTest));
+            Assert.That(testMethod.Name,
+                Is.EqualTo(nameof(IntroductoryTest) + "(auto<Int32>, auto<MyClass>)"));
+        }
+
+        [Test]
+        public void AutoDataGeneratesWorkingFullyQualifiedName()
+        {
+            var testMethod = GetTestMethod<AutoDataAttribute>(nameof(IntroductoryTest));
             Assert.That(testMethod.FullName,
-                Is.EqualTo(typeof(Scenario).FullName + "." + nameof(IntroductoryTest) + "(auto<Int32>, auto<MyClass>)"));
+                Is.EqualTo(typeof(Scenario).FullName + "." + nameof(IntroductoryTest)));
         }
 
         [Test]
@@ -414,11 +422,11 @@ namespace Ploeh.AutoFixture.NUnit3.UnitTest
         }
 
         [Test]
-        public void InlineAutoDataUsesFixedValuesForTestFullName()
+        public void InlineAutoDataGeneratesWorkingFullyQualifiedName()
         {
             var testMethod = GetTestMethod<InlineAutoDataAttribute>(nameof(InlineAutoDataProvidesParameterValuesWhenMissing));
             Assert.That(testMethod.FullName,
-                Is.EqualTo(typeof(Scenario).FullName + "." + nameof(InlineAutoDataProvidesParameterValuesWhenMissing) + @"(""alpha"", ""beta"", auto<String>)"));
+                Is.EqualTo(typeof(Scenario).FullName + "." + nameof(InlineAutoDataProvidesParameterValuesWhenMissing)));
         }
 
         private TestMethod GetTestMethod<TAttribute>(string testName) where TAttribute : Attribute, NUnit.Framework.Interfaces.ITestBuilder
