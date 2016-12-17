@@ -21,22 +21,31 @@ namespace Ploeh.AutoFixture.NUnit3
         private const int MaxArgumentLength = 40;
 
         private readonly object[] _existingParameterValues;
-        private readonly IFixture _fixture;
+        private readonly Lazy<IFixture> _fixture;
 
         /// <summary>
         /// Construct a <see cref="InlineAutoDataAttribute"/>
         /// with parameter values for test method
         /// </summary>
         public InlineAutoDataAttribute(params object[] arguments)
-            : this(new Fixture(), arguments)
+            : this(() => new Fixture(), arguments)
         {
         }
 
         /// <summary>
-        /// Construct a <see cref="InlineAutoDataAttribute"/> with an <see cref="IFixture"/> 
+        /// Construct a <see cref="InlineAutoDataAttribute"/> with an <see cref="IFixture"/>.
         /// and parameter values for test method
         /// </summary>
         protected InlineAutoDataAttribute(IFixture fixture, params object[] arguments)
+            : this(() => fixture, arguments)
+        {
+        }
+
+        /// <summary>
+        /// Construct a <see cref="InlineAutoDataAttribute"/> with an <see cref="IFixture"/> factory.
+        /// and parameter values for test method
+        /// </summary>
+        protected InlineAutoDataAttribute(Func<IFixture> fixture, params object[] arguments)
         {
             if (null == fixture)
             {
@@ -48,7 +57,7 @@ namespace Ploeh.AutoFixture.NUnit3
                 throw new ArgumentNullException(nameof(arguments));
             }
 
-            this._fixture = fixture;
+            this._fixture = new Lazy<IFixture>(fixture);
             this._existingParameterValues = arguments;
         }
 
@@ -127,7 +136,7 @@ namespace Ploeh.AutoFixture.NUnit3
         {
             CustomizeFixtureByParameter(parameterInfo);
 
-            return new SpecimenContext(this._fixture)
+            return new SpecimenContext(this._fixture.Value)
                 .Resolve(parameterInfo.ParameterInfo);
         }
 
@@ -137,7 +146,7 @@ namespace Ploeh.AutoFixture.NUnit3
             foreach (var ca in customizeAttributes)
             {
                 var customization = ca.GetCustomization(parameter.ParameterInfo);
-                this._fixture.Customize(customization);
+                this._fixture.Value.Customize(customization);
             }
         }
     }

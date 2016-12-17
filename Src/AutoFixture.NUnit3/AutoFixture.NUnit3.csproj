@@ -90,6 +90,7 @@
     <Compile Include="ModestAttribute.cs" />
     <Compile Include="NoAutoPropertiesAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestAdapterHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
