@@ -39,6 +39,10 @@ namespace Ploeh.AutoFixture.NUnit3
         protected InlineAutoDataAttribute(IFixture fixture, params object[] arguments)
             : this(() => fixture, arguments)
         {
+            if (null == fixture)
+            {
+                throw new ArgumentNullException(nameof(fixture));
+            }
         }
 
         /// <summary>
